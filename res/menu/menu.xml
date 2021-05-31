@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id = "@+id/tvListFragment"
+        android:icon = "@drawable/ic_tv"
+        android:title = "@string/app_name"/>
+
+    <item
+        android:id = "@+id/tvFavoriteFragment"
+        android:icon = "@drawable/ic_tv_favorite"
+        android:title = "@string/tv_favorite_fragment_title"/>
+
+</menu>

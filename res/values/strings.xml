@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Телесериалы</string>
+
+    <string name="fragment_tv_list_title">Список телесериалов</string>
+    <string name="fragment_tv_detail_title">Телесериал</string>
+
+    <string name="splashscreen_image_description">Заставка</string>
+    <string name="tv_image_description">Изображение сериала</string>
+    <string name="image_button_delete_favorite_description">Кнопка удаления списка избранных телесериалов</string>
+
+    <string name="loading_error_message">Произошла ошибка загрузки</string>
+    <string name="loading_retry_button">Перезагрузить</string>
+
+    <string name="first_air_date_description">Дата первого показа:</string>
+    <string name="last_air_date_description">Дата последнего показа:</string>
+    <string name="number_of_seasons_description">Число сезонов:</string>
+    <string name="number_of_episodes_description">Число серий:</string>
+    <string name="original_language_description">Оригинальный язык:</string>
+    <string name="original_name_description">Оригинальное название:</string>
+    <string name="genres_description">Жанры:</string>
+
+    <string name="tv_list_first_air_date_description">Выпущен:</string>
+
+    <string name="tv_favorite_fragment_title">Избранное</string>
+
+    <string name="tv_favorite_dialog_fragment_message">Вы действительно хотите очистить список избранных телесериалов?</string>
+
+    <string name="dialog_fragment_positive_button_text">Да</string>
+    <string name="dialog_fragment_negative_button_text">Нет</string>
+
+</resources>

@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="item"
+            type="com.chugunov.populartvwatcher.db.entities.TvDetailEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tv_detail_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/AppTheme.Toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="Телесериал"/>
+
+        <ProgressBar
+            android:id="@+id/tv_detail_progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.Progress"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_detail_error_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_error_message"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/tv_detail_button_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_retry_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_error_msg" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id = "@+id/tv_detail_swiper"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/tv_detail_image"
+                        android:layout_width="0dp"
+                        android:layout_height="250dp"
+                        android:contentDescription="@string/tv_image_description"
+                        android:src="@{item.backdrop_path}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@{item.name}"
+                        android:textSize="24sp"
+                        android:textStyle="italic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_image" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_overview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.overview}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_name"
+                        android:textSize="18sp"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"/>
+
+                    <View
+                        android:id="@+id/tv_detail_delimiter_overview"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/blue_500"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_overview"/>
+
+                    <TextView
+                        android:id="@+id/tv_detail_first_air_date_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="@string/first_air_date_description"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="italic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_overview"
+                        tools:ignore="RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_first_air_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.first_air_date}"
+                        app:layout_constraintStart_toEndOf="@id/tv_detail_first_air_date_description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_overview"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:gravity="end"/>
+
+                    <View
+                        android:id="@+id/tv_detail_delimiter_first_air_date"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/blue_500"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_first_air_date"/>
+
+                    <TextView
+                        android:id="@+id/tv_detail_last_air_date_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="@string/last_air_date_description"
+                        android:textColor="#000000"
+                        android:textStyle="italic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_first_air_date"
+                        tools:ignore="RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_last_air_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.last_air_date}"
+                        app:layout_constraintStart_toEndOf="@id/tv_detail_last_air_date_description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_first_air_date"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:gravity="end"/>
+
+                    <View
+                        android:id="@+id/tv_detail_delimiter_last_air_date"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/blue_500"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_last_air_date"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_detail_delimiter_number_of_seasons_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="@string/number_of_seasons_description"
+                        android:textColor="#000000"
+                        android:textStyle="italic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_last_air_date"
+                        tools:ignore="RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_number_of_seasons"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.number_of_seasons}"
+                        app:layout_constraintStart_toEndOf="@id/tv_detail_delimiter_number_of_seasons_description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_last_air_date"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:gravity="end"/>
+
+                    <View
+                        android:id="@+id/tv_detail_delimiter_number_of_seasons"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/blue_500"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_number_of_seasons"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_detail_number_of_episodes_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="@string/number_of_episodes_description"
+                        android:textColor="#000000"
+                        android:textStyle="italic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_number_of_seasons"
+                        tools:ignore="RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_number_of_episodes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.number_of_episodes}"
+                        app:layout_constraintStart_toEndOf="@id/tv_detail_number_of_episodes_description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_number_of_seasons"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:gravity="end"/>
+
+                    <View
+                        android:id="@+id/tv_detail_delimiter_number_of_episodes"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/blue_500"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_number_of_episodes"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_detail_original_language_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="@string/original_language_description"
+                        android:textColor="#000000"
+                        android:textStyle="italic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_number_of_episodes"
+                        tools:ignore="RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_original_language"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.original_language}"
+                        app:layout_constraintStart_toEndOf="@id/tv_detail_original_language_description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_number_of_episodes"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:gravity="end"/>
+
+                    <View
+                        android:id="@+id/tv_detail_delimiter_original_language"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/blue_500"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_original_language"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_detail_original_name_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="@string/original_name_description"
+                        android:textColor="#000000"
+                        android:textStyle="italic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_original_language"
+                        tools:ignore="RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_original_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.original_name}"
+                        app:layout_constraintStart_toEndOf="@id/tv_detail_original_name_description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_original_language"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:gravity="end"/>
+
+                    <View
+                        android:id="@+id/tv_detail_delimiter_original_name"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/blue_500"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_original_name"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_detail_genres_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="@string/genres_description"
+                        android:textColor="#000000"
+                        android:textStyle="italic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_original_name"
+                        tools:ignore="RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_genres"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.genre_name}"
+                        app:layout_constraintStart_toEndOf="@id/tv_detail_genres_description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_delimiter_original_name"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:gravity="end"/>
+
+                    <View
+                        android:id="@+id/tv_detail_delimiter_genres"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/blue_500"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_detail_genres"/>
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </ScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

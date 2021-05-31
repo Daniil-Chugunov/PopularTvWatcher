@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/tvListFragment">
+
+
+    <fragment
+        android:id="@+id/tvListFragment"
+        android:name="com.chugunov.populartvwatcher.ui.tvList.TvListFragment"
+        android:label="fragment_tv_list"
+        tools:layout="@layout/fragment_tv_list"/>
+
+    <fragment
+        android:id="@+id/tvDetailFragment"
+        android:name="com.chugunov.populartvwatcher.ui.tvDetail.TvDetailFragment"
+        android:label="fragment_tv_detail"
+        tools:layout="@layout/fragment_tv_detail" />
+
+    <fragment
+        android:id="@+id/tvFavoriteFragment"
+        android:name="com.chugunov.populartvwatcher.ui.tvFavorite.TvFavoriteFragment"
+        android:label="fragment_tv_favorite"
+        tools:layout="@layout/fragment_tv_favorite" />
+
+    <fragment
+        android:id="@+id/photoFullscreenFragment"
+        android:name="com.chugunov.populartvwatcher.ui.photoFullscreen.PhotoFullscreenFragment"
+        android:label="fragment_photo_fullscreen"
+        tools:layout="@layout/fragment_photo_fullscreen" />
+
+</navigation>
