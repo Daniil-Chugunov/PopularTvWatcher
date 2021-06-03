@@ -23,7 +23,6 @@ import com.chugunov.populartvwatcher.views.TvListView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
@@ -75,30 +74,21 @@ class TvListFragment() : MvpAppCompatFragment(), TvListView {
     }
 
 
-    private lateinit var tvListAdapter: TvListAdapter
+    private var tvListAdapter: TvListAdapter = TvListAdapter ({ id, title ->
+        onItemClickListener(id, title)
+    },
+        {  id, position->
+            presenter.changeFavoriteStatus(id, position)
+        }
+    )
 
-    var pagingDisposable: Disposable? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    private fun initAdapter(){
-
-        tvListAdapter = TvListAdapter ({ id, title ->
-            onItemClickListener(id, title)
-        },
-                {  id, position->
-                    presenter.changeFavoriteStatus(id, position)
-                }
-        )
-
-        pagingDisposable?.dispose()
-
-        pagingDisposable = presenter.pagingData?.subscribe{
-            tvListAdapter.submitData(lifecycle, it)
-            presenter.onViewReceivePagingData()
+        presenter.pagingData.subscribe{
+            tvListAdapter.submitData( lifecycle, it)
         }
 
-        tvListAdapter.addLoadStateListener {
-            onAdapterAddLoadStateChanged(it)
-        }
     }
 
 
@@ -110,7 +100,9 @@ class TvListFragment() : MvpAppCompatFragment(), TvListView {
             setHasFixedSize(true)
         }
 
-        initAdapter()
+        tvListAdapter.addLoadStateListener {
+            onAdapterAddLoadStateChanged(it)
+        }
 
         binding.tvListSwiper.setOnRefreshListener {
             refreshAdapter()
@@ -135,6 +127,11 @@ class TvListFragment() : MvpAppCompatFragment(), TvListView {
                 presenter.onSearchStateChanged(it)
         }
 
+        binding.tvListRecycler.adapter = tvListAdapter
+            .withLoadStateHeaderAndFooter(
+                header = StateAdapter(View.OnClickListener { tvListAdapter.retry() }),
+                footer = StateAdapter(View.OnClickListener { tvListAdapter.retry() })
+            )
 
         binding.tvListButtonRetry.setOnClickListener {
             tvListAdapter.retry()
@@ -170,25 +167,11 @@ class TvListFragment() : MvpAppCompatFragment(), TvListView {
     }
 
     override fun refreshAdapter() {
-        initAdapter()
+        tvListAdapter.refresh()
     }
 
     override fun itemChangeFavoriteStatus(id: Int, position: Int) {
         tvListAdapter.notifyItemRebind(id, position)
-    }
-
-    override fun bindAdapter(isBind: Boolean) {
-        if(isBind){
-            binding.tvListRecycler.adapter = tvListAdapter
-                    .withLoadStateHeaderAndFooter(
-                            header = StateAdapter(View.OnClickListener { tvListAdapter.retry() }),
-                            footer = StateAdapter(View.OnClickListener { tvListAdapter.retry() })
-                    )
-        }
-        else {
-            pagingDisposable?.dispose()
-            binding.tvListRecycler.adapter = null
-        }
     }
 
 

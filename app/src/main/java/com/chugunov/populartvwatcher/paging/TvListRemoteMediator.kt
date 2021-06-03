@@ -1,6 +1,5 @@
 package com.chugunov.populartvwatcher.paging
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -10,7 +9,6 @@ import com.chugunov.populartvwatcher.application.Constant
 import com.chugunov.populartvwatcher.db.dao.TvFavoriteDao
 import com.chugunov.populartvwatcher.db.dao.TvListDao
 import com.chugunov.populartvwatcher.db.entities.TvListEntity
-import com.chugunov.populartvwatcher.filters.TvListFilter
 import io.reactivex.rxjava3.core.Single
 import java.net.UnknownHostException
 
@@ -19,11 +17,12 @@ import java.net.UnknownHostException
 class TvListRemoteMediator(
     private val tvListDao: TvListDao,
     private val favoriteDao: TvFavoriteDao,
-    private val tvApi: TvApi,
-    private val filter: TvListFilter
+    private val tvApi: TvApi
 ) : RxRemoteMediator<Int, TvListEntity>() {
 
     var currentPage = 1
+
+    var searchQuery = ""
 
     override fun loadSingle(
         loadType: LoadType,
@@ -42,14 +41,14 @@ class TvListRemoteMediator(
                 currentPage
             }
         }
-        Log.e("PAGE", currentPage.toString())
+
         try {
 
             //в зависимости от того, задан ли поиск
-            var response = if(filter.search!=null)
-                tvApi.getTvListBySearch(Constant.API_KEY, Constant.API_LANGUAGE, loadPage, filter.search!!)
-            else
+            var response = if(searchQuery.isEmpty())
                 tvApi.getPopularTvList(Constant.API_KEY, Constant.API_LANGUAGE, loadPage)
+            else
+                tvApi.getTvListBySearch(Constant.API_KEY, Constant.API_LANGUAGE, loadPage, searchQuery)
 
             return response
 
